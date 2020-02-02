@@ -1,0 +1,54 @@
+env:
+  global:
+    - TERM=dumb
+notifications:
+  email: false
+git:
+  quiet: true
+  depth: false
+language: python
+python: 3.8
+node_js: lts/*
+jdk: openjdk8
+services: docker
+addons:
+  apt:
+    update: false
+    packages:
+      - curl
+      - docker-ce
+install: true
+before_install:
+  - |
+    if [ ! -f ${HOME}/.local/daggerok/bash-functions/master/main.bash ] ; then
+      mkdir -p ${HOME}/.local/daggerok/bash-functions/master
+      curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash > ${HOME}/.local/daggerok/bash-functions/master/main.bash
+    fi
+    source ${HOME}/.local/daggerok/bash-functions/master/main.bash
+    stop_any 5672 15672 3000 5000 8000 8080 80
+  - |
+    export PATH=$HOME/.local/bin:$PATH
+    python -m pip install --upgrade pip setuptools pyopenssl
+    python -m pip install --upgrade httpie
+jobs:
+  include:
+    - stage: test
+      jdk: openjdk8
+      name: tests
+      before_script:
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f rabbitmq docker:start
+        - cd $TRAVIS_BUILD_DIR && ./mvnw
+        - bash $TRAVIS_BUILD_DIR/source-output-app/target/*.jar &
+        - wait_fore 8080
+      script:
+        - echo Hi...
+      after_script:
+        - stop_any 8080
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f rabbitmq docker:stop docker:remove
+        - stop_any 15672 5672
+cache:
+  directories:
+    - ~/.m2
+    - ~/.docker
+  packages: true
+  pip: true

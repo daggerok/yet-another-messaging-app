@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>yet-another-messaging-app</artifactId>
+        <groupId>com.example</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>rabbitmq</artifactId>
+
+    <properties>
+        <!-- docker rabbitmq -->
+        <rabbitmq.docker.name>rabbitmq:3.8.2-management-alpine</rabbitmq.docker.name>
+        <rabbitmq.docker.log.prefix>rabbitmq</rabbitmq.docker.log.prefix>
+        <rabbitmq.docker.ports.1>5672:5672</rabbitmq.docker.ports.1>
+        <rabbitmq.docker.ports.2>15672:15672</rabbitmq.docker.ports.2>
+        <!--<rabbitmq.docker.env.RABBITMQ_DEFAULT_USER>guest</rabbitmq.docker.env.RABBITMQ_DEFAULT_USER>
+        <rabbitmq.docker.env.RABBITMQ_DEFAULT_PASS>guest</rabbitmq.docker.env.RABBITMQ_DEFAULT_PASS>-->
+        <rabbitmq.docker.wait.time>35000</rabbitmq.docker.wait.time>
+        <rabbitmq.docker.wait.log>Server startup complete; 3 plugins started.</rabbitmq.docker.wait.log>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!--
+                  ./mvnw -f rabbitmq docker:start
+                  ./mvnw -f rabbitmq docker:stop docker:remove
+                -->
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <images>
+                        <image>
+                            <external>
+                                <type>properties</type>
+                                <prefix>rabbitmq.docker</prefix>
+                            </external>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
