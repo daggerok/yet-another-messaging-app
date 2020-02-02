@@ -9,7 +9,7 @@ git:
 language: python
 python: 3.8
 node_js: lts/*
-jdk: openjdk8
+jdk: openjdk11
 services: docker
 addons:
   apt:
@@ -29,17 +29,16 @@ before_install:
   - |
     export PATH=$HOME/.local/bin:$PATH
     python -m pip install --upgrade pip setuptools pyopenssl
-    python -m pip install --upgrade httpie
+    python -m pip install --upgrade httpie docker-compose
 jobs:
   include:
     - stage: test
-      jdk: openjdk8
       name: tests
       before_script:
         - cd $TRAVIS_BUILD_DIR && ./mvnw -f rabbitmq docker:start
         - cd $TRAVIS_BUILD_DIR && ./mvnw
         - bash $TRAVIS_BUILD_DIR/source-output-app/target/*.jar &
-        - wait_fore 8080
+        - wait_for 8080
       script:
         - echo Hi...
       after_script:

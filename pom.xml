@@ -17,8 +17,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>source-output-app</module>
         <module>rabbitmq</module>
+        <module>source-output-app</module>
     </modules>
 
     <properties>

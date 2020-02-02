@@ -1,8 +1,14 @@
-HELP.md
+### IntelliJ IDEA ###
+.idea
+!.idea/
+.idea/*
+!.idea/runConfigurations/
+*.iws
+*.iml
+*.ipr
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
+/out/
+**/out/**
 
 ### STS ###
 .apt_generated
@@ -12,12 +18,6 @@ target/
 .settings
 .springBeans
 .sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
 
 ### NetBeans ###
 /nbproject/private/

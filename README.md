@@ -1,4 +1,5 @@
-# yet-another-messaging-app
+# yet-another-messaging-app [![Build Status](https://travis-ci.org/daggerok/yet-another-messaging-app.svg?branch=master)](https://travis-ci.org/daggerok/yet-another-messaging-app)
+Build reactive pipelines with spring cloud stream
 
 ```bash
 ./mvnw -f rabbitmq docker:start
