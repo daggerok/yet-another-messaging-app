@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>source-output-app</artifactId>
+    <artifactId>sink-input-app</artifactId>
     <modelVersion>4.0.0</modelVersion>
 
     <build>
