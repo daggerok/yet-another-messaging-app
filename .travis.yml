@@ -35,16 +35,19 @@ jobs:
     - stage: test
       name: tests
       before_script:
-        - cd $TRAVIS_BUILD_DIR && ./mvnw -f rabbitmq docker:start
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f rabbitmq docker:build docker:start
         - cd $TRAVIS_BUILD_DIR && ./mvnw
         - bash $TRAVIS_BUILD_DIR/source-output-app/target/*.jar &
-        - wait_for 8080
+        - bash $TRAVIS_BUILD_DIR/processor-transforming-app/target/*.jar &
+        - bash $TRAVIS_BUILD_DIR/sink-input-app/target/*.jar &
+        - wait_for 8081 8082 8083
       script:
-        - echo Hi...
+        - sleep 15s
       after_script:
-        - stop_any 8080
+        - http post :8081/actuator/shutdown
+        - http post :8082/actuator/shutdown
+        - http post :8083/actuator/shutdown
         - cd $TRAVIS_BUILD_DIR && ./mvnw -f rabbitmq docker:stop docker:remove
-        - stop_any 15672 5672
 cache:
   directories:
     - ~/.m2
